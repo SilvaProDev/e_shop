@@ -42,7 +42,7 @@
                             {% endfor%}
 							
 						</div>
-						<div id="product-view">
+						<!-- <div id="product-view">
 							<div class="product-view">
 								<img src="{{produit.photo.url}}" alt="" style="height: 300px;">
 							</div>
@@ -52,7 +52,7 @@
                             </div>
                             {% endfor%}
 							
-						</div>
+						</div> -->
 					</div>
 					<div class="col-md-6">
 						<div class="product-body">
@@ -61,7 +61,7 @@
 								<span class="sale">-20%</span>
 							</div>
 							<h2 class="product-name">{{produit.titre}}</h2>
-							<h3 class="product-price">${{produit.price}} <del class="product-old-price">${{produit.reduction}}</del></h3>
+							<h3 class="product-price">{{produit.price}}€ <del class="product-old-price">{{produit.reduction}}€</del></h3>
 							<div>
 								<div class="product-rating">
 									<i class="fa fa-star {% if produit.averagereview < 1 %}-o empty{% endif %} "></i>
@@ -75,7 +75,7 @@
 								</div>
 								<a href="#"> {{ produit.countreview}} Avis(s) / Add Avis</a>
 							</div>
-							<p><strong>Availability:</strong> In Stock</p>
+							<p><strong>Disponibilité:</strong> En stock</p>
 							<p><strong>Brand:</strong> E-SHOP</p>
 							<p>{{produit.description}}</p>
 							<div class="product-options">
@@ -148,7 +148,7 @@
 											</div>
 										</div>
 										<div class="col-md-6">
-											<h4 class="text-uppercase">Write Your Review</h4>
+											<h4 class="text-uppercase">Votre commentaire</h4>
 												{% if messages %}
 													{% for message in messages %}
 														<div class="alert-alert-{{message.tags}}" role="alert" style="color: green; font-style: italic;">
@@ -159,7 +159,7 @@
 											<form class="review-form" action="/addcomment/{{produit.id}}" method="post">
 												{% csrf_token %}
 												<div class="form-group">
-													<input name="subject" class="input" type="text" placeholder="Your Subject" />
+													<input name="subject" class="input" type="text" placeholder="votre sujet" />
 												</div>
 												
 												<div class="form-group">
@@ -167,7 +167,7 @@
 												</div>
 												<div class="form-group">
 													<div class="input-rating">
-														<strong class="text-uppercase">Your Rating: </strong>
+														<strong class="text-uppercase">votre rating: </strong>
 														<div class="stars">
 															<input type="radio" id="star5" name="rate" value="5" /><label for="star5"></label>
 															<input type="radio" id="star4" name="rate" value="4" /><label for="star4"></label>
@@ -178,7 +178,7 @@
 													</div>
 												</div>
 												{% if user.id is not None%}
-												<button type="submit" class="primary-btn">Submit</button>
+												<button type="submit" class="primary-btn">Envoyer</button>
 												{% else %}
 												Connectez-vous pour commenter !!!
 												{% endif %}

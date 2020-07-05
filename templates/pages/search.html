@@ -180,10 +180,15 @@
 										<tbody>
 											{% for pro in produits %}
 											<tr>
-												<td class="thumb"><a href="/Articles/{{pro.id}}/{{pro.slug}}"><img src="{{pro.photo.url}}" alt="" style="height: 60px;"></a></td>
-                                                <td class="details"><a href="/Articles/{{pro.id}}/{{pro.slug}}">{{pro.titre}}</a></td>
-                                                <td class="details"><a href="/categorie/{{pro.categorie_id}}/{{pro.categorie.slug}}">{{pro.categorie}}</a></td>
-												<td class="price text-center"><strong>${{pro.price}}</strong><br><del class="font-weak"><small>${{pro.reduction}}</small></del></td>
+												<td class="thumb">
+													{% if pro.photo %}
+													<a href="/Articles/{{pro.id}}/{{pro.slug}}"><img src="{{pro.photo.url}}" alt="" style="height: 60px;">
+													</a>
+													{% endif %}
+												</td>
+                                                <td class="details"><a href="/Articles/{{pro.id}}/{{pro.slug}}">{{pro.titre|truncatechars:8}}</a></td>
+                                                <td class="details"><a href="/categorie/{{pro.categorie_id}}/{{pro.categorie.slug}}">{{pro.categorie|truncatewords:3}}</a></td>
+												<td class="price text-center"><strong>${{pro.price}}</strong><br><del class="font-weak"><small>{{pro.reduction}}€</small></del></td>
 												<td class="qty text-center"><input class="input" type="number" value="1"></td>
 												<td><a href="/order/add-to-cart/{{pro.id}}" class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> add to cart</a></td>
 											</tr>
