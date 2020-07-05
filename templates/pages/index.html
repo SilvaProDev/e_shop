@@ -1,0 +1,9 @@
+{% extends 'bases/base.html' %}
+
+{% block title %} {{setting.titre}} {% endblock %}
+{% block description %} {{setting.description}} {% endblock %}
+{% block keywords %} {{setting.keywords}} {% endblock %}
+
+{% block sidebar %} {% include 'pages/sidebar.html' %} {% endblock  %}
+{% block slider %} {% include 'pages/slider.html' %} {% endblock  %}
+{% block body %} {% include 'pages/content.html' %} {% endblock  %}

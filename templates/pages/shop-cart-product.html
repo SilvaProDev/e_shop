@@ -1,0 +1,112 @@
+{% extends 'bases/base.html' %}
+
+{% block title %}  Mon Panier {% endblock %}
+{% block description %} {{setting.description}} {% endblock %}
+{% block keywords %} {{setting.keywords}} {% endblock %}
+
+{% block sidebar %} {% include 'pages/sidebar.html' %} {% endblock  %}
+
+{% block body %} 
+
+     <!-- BREADCRUMB -->
+     <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li class="active">Panier </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="section-title">
+                    <h3>Les Produits De Mon panier</h3>
+                </div>
+                <table class="shopping-cart-table table">
+                    <thead>
+                        <tr>
+                            <!-- <th>x</th> -->
+                            <th>Les Produits</th>
+                            <th></th>
+                            <th class="text-center">Prix</th>
+                            <th class="text-center">Quantité</th>
+                            <th class="text-center">Total</th>
+                            <th class="text-right"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sp in shopcart %}
+                        <tr>
+                            <!-- <td>{{forloop.counter}}</td> -->
+                            <td class="thumb"><img src="{{sp.produit.photo.url}}" alt=""></td>
+                            <td class="details">
+                                <a href="/Articles/{{sp.produit.id}}/{{sp.produit.slug}}">{{sp.produit}}</a>
+                            </td>
+                            <td class="price text-center"><strong>{{sp.produit.price}}</strong><br><del class="font-weak"><small>{{sp.produit.reduction}}</small></del></td>
+                            <td class="total text-center"><strong class="primary-color">{{sp.quantity}}</strong></td>
+                            <td class="total text-center"><strong class="primary-color">$ {{sp.amount}}</strong></td>
+                            <td class="text-right"><button class="main-btn icon-btn"> <a href="/order/delete-from-shop-cart/{{sp.id}}" onclick="return confirm('Etre vous sure de vouloir supprimer ?')" class="main-btn icon-btn"> <i class="fa fa-close"></i></a></button></td>
+                  
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">
+                            <p style="font-size: 20px; color: darkorange; text-transform: uppercase;"> Votre panier est vide </p> 
+                        </td>
+                        <td colspan="5">
+                            <a class="primary-btn" href="/">continuer mes achat</a>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                            
+                    <tfoot>
+                        <br>
+                        <tr>
+                            <th class="empty" colspan="3"></th>
+                            <th>SUBTOTAL</th>
+                            <th colspan="2" class="sub-total">${{total}}</th>
+                        </tr>
+                        <tr>
+                            <th class="empty" colspan="3"></th>
+                            <th>SHIPING</th>
+                            <td colspan="2">Free Shipping</td>
+                        </tr>
+                        <tr>
+                            <th class="empty" colspan="3"></th>
+                            <th>TOTAL</th>
+                            <th colspan="2" class="total">${{total}}</th>
+                        </tr>
+
+                        <!-- <tr>
+                            <th colspan="8">
+                                <a class=" primary-btn float-right" href="#">Valider mon achat</a>
+                                <a class=" primary-btn float-right " href="/">continuer mon shopping</a>
+                            </th>
+                        </tr>  -->
+                    </tfoot>
+
+                   
+
+                </table>
+                <!-- <div class="pull-left" >
+                    
+                </div> -->
+                <div class="pull-right">
+                    <a href="/" class="primary-btn float-rigth ml-2" style="margin-right: 10px;">Continuer mes Achats</a>
+                    <a href="/order/orderproduit" class="primary-btn">Commander</a>
+                </div>
+                
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+{% endblock  %}

@@ -1,0 +1,116 @@
+{% extends 'bases/base.html' %}
+
+{% block title %}  Details produits{% endblock %}
+{% block description %} {{setting.description}} {% endblock %}
+{% block keywords %} {{setting.keywords}} {% endblock %}
+
+{% block sidebar %} {% include 'pages/sidebar.html' %} {% endblock  %}
+
+{% block body %} 
+
+     <!-- BREADCRUMB -->
+     <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li class="active">Mes produits</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-3">
+                    {% include 'user/user-panel.html' %}
+                </div>
+
+                <div class="col-md-9">
+                    <div class="order-summary-clearfix">
+                        <div class="section-title">
+                            <h3>Details produits</h3>
+                        </div>
+                        <table class="shopping-cart-table table">
+                            <tr>
+                                <th class="text-left" >Nom Prénom</th>
+                                <td class="text-left"> {{orders.first_name}} {{orders.last_name}} </td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" >Numero</th>
+                                <td class="text-left"> {{orders.phone}} </td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" >Address</th>
+                                <td class="text-left"> {{orders.address}} </td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" >Ville</th>
+                                <td class="text-left"> {{orders.city}} </td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" >Pays</th>
+                                <td class="text-left"> {{orders.country}} </td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" >Status</th>
+                                <td class="text-left"> {{orders.status}} </td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" >Date</th>
+                                <td class="text-left"> {{orders.date_add}} </td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" >Etat du produit</th>
+                                <td class="text-left"> {{orders.adminnote}} </td>
+                            </tr>
+                            
+                        </table>
+                        <div class="section-title">
+                            <br><br>
+                            <h3>Liste de mes commandes</h3>
+                        </div>
+                        <table class="shopping-cart-table table">
+                            
+                                <tr>
+                                    <th class="text-left">ID</th>
+                                    <th class="text-left">Nom du produit</th>
+                                    <th></th>
+                                    <th class="text-left">Prix</th>
+                                    <th class="text-left">Quantité</th>
+                                    <th class="text-left">Montant</th>
+                                    <th class="text-left">Status</th>
+                                    <th class="text-left">Date</th>
+                                </tr>
+                        
+                                {% for rs in orderitems %}
+                                <tr>
+                                    <!-- <td> {{rs.id}} </td> -->
+                                    <td></td>
+                                    <td class="text-left"> 
+                                        <a href="/Articles/{{rs.produit_id}}/{{rs.produit.slug}}">
+                                            <img src=" {{rs.produit.photo.url}} " alt="" style="height: 50px;">
+                                        </a>
+                                    </td>
+                                    <td class="text-left"> {{rs.produit.title}} </td>
+                                    <td class="text-left"> $ {{rs.price}} </td>
+                                    <td class="text-left">{{rs.quantity}} </td>
+                                    <td class="text-left"> $ {{rs.amount}}</td>
+                                    <td class="text-left">{{rs.status}} </td>
+                                    <td class="text-left">{{rs.date_add}} </td>
+                                </tr>
+                                {% endfor %}
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+{% endblock  %}

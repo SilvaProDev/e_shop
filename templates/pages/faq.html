@@ -1,0 +1,50 @@
+{% extends 'bases/base.html' %}
+
+{% block title %} Question Frequemment Posées  {% endblock %}
+{% block description %} {{setting.description}} {% endblock %}
+{% block keywords %} {{setting.keywords}} {% endblock %}
+
+{% block sidebar %} {% include 'pages/sidebar.html' %} {% endblock  %}
+
+
+
+{% block body %} 
+
+     <!-- BREADCRUMB -->
+     <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li class="active">Question Fréquement Posées </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+
+                <div id="accordion">
+
+                    {% for fa in faq %}
+                    <h3>{{fa.question}}</h3>
+                    <div>
+                      <p>
+                        {{fa.answer|safe}}
+                      </p>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+{% endblock  %}
+

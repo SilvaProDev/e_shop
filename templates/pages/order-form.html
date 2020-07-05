@@ -1,0 +1,176 @@
+{% extends 'bases/base.html' %}
+
+{% block title %}  Order Page {{setting.titre}} {% endblock %}
+{% block description %} {{setting.description}} {% endblock %}
+{% block keywords %} {{setting.keywords}} {% endblock %}
+
+{% block sidebar %} {% include 'pages/sidebar.html' %} {% endblock  %}
+
+{% block body %} 
+
+     <!-- BREADCRUMB -->
+     <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li class="active">Order  </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="col-md-6">
+                        <div class="billing-details">
+                            <div class="section-title">
+                                <h4>Shippiung Details</h4>
+                            </div>
+                            <p>
+                                <label for="id_first_name">Nom:</label>
+                                <input type="text" name="first_name" id="first_name" value="{{user.first_name}}" class="input" maxlength="20", required='True'>
+                            </p>
+                            <p>
+                                <label for="id_last_name">Prenom:</label>
+                                <input type="text" name="last_name" id="last_name" value="{{user.last_name}}" class="input" maxlength="20", required>
+                            </p>
+                            <p>
+                                <label for="id_address">Adress:</label>
+                                <input type="text" name="address" id="address" value="{{profile.address}}" class="input" maxlength="150", required>
+                            </p>
+                            <p>
+                                <label for="id_phone">Phone:</label>
+                                <input type="text" name="phone" id="phone" value="{{profile.phone}}" class="input" maxlength="20", required='True'>
+                            </p>
+                            <p>
+                                <label for="id_city">city:</label>
+                                <select name="city" id="city" class="input">
+                                    <option value="{{profile.city}}" selected>{{profile.city}}</option>
+                                    <option value="Abidjan" selected>Abidjan</option>
+                                    <option value="Bassam" selected>Bassam</option>
+                                    <option value="Alepe" selected>Alepe</option>
+                                    <option value="Azope" selected>Azope</option>
+                                    <option value="Soubre" selected>Soubre</option>
+                                    <option value="Zangou" selected>Zangou</option>
+                                    <option value="Korhogo" selected>Korhogo</option>
+                                    <option value="Boundiali" selected>Boundiali</option>
+                                    <option value="Odiene" selected>Odiéné</option>
+                                    
+                                </select>
+                            </p>
+                            <p>
+                                <label for="id_country">Country:</label>
+                                <input type="text" class="input" name="country" id="country" value="{{profile.country}}" >
+                            </p>
+                            <div class="pull-right">
+                                <button type="submit" class="primary-btn">Valider</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="shipping-methods">
+                            <div class="section-title">
+                                <h4>Payment Informations</h4>
+                            </div>
+                            <p>
+                                <label for="id_first_name">Total:</label>
+                                <input type="text" class="input" name="total" readonly value="${{total}}">
+                            </p>
+                            <p>
+                                <label for="id_first_name">Credit Cart Holder</label>
+                                <input type="text" class="input" name="holder" value="">
+                            </p>
+                            <p>
+                                <label for="id_first_name">Credit Cart Number</label>
+                                <input type="text" class="input" name="number"  value="">
+                            </p>
+                            <p>
+                                <label for="id_first_name">Credit Exp Date/Year</label>
+                                <input type="text" class="input" name="ecpdate"  placeholder="mm/yy">
+                            </p>
+                            <p>
+                                <label for="id_first_name">Security Number</label>
+                                <input type="text" class="input" name="secnumber"  value="">
+                            </p>
+                        </div>
+                        <br><br>
+                    </div>
+                    
+                </form>
+                
+        
+                    <div class="col-md-12">
+                        <div class="order-summary-clearfix">
+                            <div class="section-title">
+                                <h3>Product List</h3>
+                            </div>
+                            
+                            <table class="shopping-cart-table table">
+                    
+                    
+                                <thead>
+                                    
+                                    <tr>
+                                        <!-- <th>x</th> -->
+                                        <th>Product List</th>
+                                        <th></th>
+                                        <th class="text-center">Price</th>
+                                        <th class="text-center">Quantity</th>
+                                        <th class="text-center">Total</th>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for sp in schopcart %}
+                                    <tr>
+                                        <!-- <td>{{forloop.counter}}</td> -->
+                                        <td class="thumb"><img src="{{sp.produit.photo.url}}" alt=""></td>
+                                        <td class="details">
+                                            <a href="/Articles/{{sp.produit.id}}/{{sp.produit.slug}}">{{sp.produit}}</a>
+                                        </td>
+                                        <td class="price text-center"><strong>{{sp.produit.price}}</strong><br><del class="font-weak"><small>{{sp.produit.reduction}}</small></del></td>
+                                        <td class="total text-center"><strong class="primary-color">{{sp.quantity}}</strong></td>
+                                        <td class="total text-center"><strong class="primary-color">$ {{sp.amount}}</strong></td>
+                                    </tr>
+                                    {% endfor %}
+                                    
+                                       
+                                <tfoot>
+                                    <tr>
+                                        <th class="empty" colspan="3"></th>
+                                        <th>SUBTOTAL</th>
+                                        <th colspan="2" class="sub-total">${{total}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="empty" colspan="3"></th>
+                                        <th>SHIPING</th>
+                                        <td colspan="2">Free Shipping</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="empty" colspan="3"></th>
+                                        <th>TOTAL</th>
+                                        <th colspan="2" class="total">${{total}}</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                    </div>
+
+                
+                
+                
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+{% endblock  %}

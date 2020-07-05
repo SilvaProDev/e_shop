@@ -1,0 +1,68 @@
+{% extends 'bases/base.html' %}
+
+{% block title %}  Mes produits {% endblock %}
+{% block description %} {{setting.description}} {% endblock %}
+{% block keywords %} {{setting.keywords}} {% endblock %}
+
+{% block sidebar %} {% include 'pages/sidebar.html' %} {% endblock  %}
+
+{% block body %} 
+
+     <!-- BREADCRUMB -->
+     <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li class="active">Mes produits</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-3">
+                    {% include 'user/user-panel.html' %}
+                </div>
+
+                <div class="col-md-9">
+                    <div class="section-title">
+                        <h3>Mes produits</h3>
+                    </div>
+                    <table class="shopping-cart-table table">
+                        <thead>
+                            <tr>
+                                <th class="text-left">ID</th>
+                                <th class="text-left">Nom</th>
+                                <th class="text-left">Prenom</th>
+                                <th class="text-left">Total</th>
+                                <th class="text-left">Status</th>
+                                <th class="text-left">Date</th>
+                                <th class="text-right">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sp in orders %}
+                            <tr>
+                                <th class="text-left"> {{sp.id}} </th>
+                                <th class="text-left">{{sp.first_name}}</th>
+                                <th class="text-left">{{sp.last_name}}</th>
+                                <th class="text-left">{{sp.total}}</th>
+                                <th class="text-left">{{sp.status}}</th>
+                                <th class="text-left">{{sp.date_add}}</th>
+                                <th class="text-right"> <a class="primary-btn" href="/user/order-details/{{sp.id}}">Details</a></th>
+                            {% endfor %}
+                            
+                    </table>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+{% endblock  %}

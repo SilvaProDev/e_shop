@@ -1,0 +1,61 @@
+{% extends 'bases/base.html' %}
+
+{% block title %}{{setting.titre}}|Inscription {% endblock %}
+{% block description %} {{setting.description}} {% endblock %}
+{% block keywords %} {{setting.keywords}} {% endblock %}
+
+{% block sidebar %} {% include 'pages/sidebar.html' %} {% endblock  %}
+
+{% block body %} 
+
+     <!-- BREADCRUMB -->
+     <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li class="active">Inscription </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                
+					<div class="col-md-6">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert-alert-{{message.tags}}" role="alert" style="color: green; font-style: italic;">
+                                    {{message}}
+                                </div>
+                            {% endfor %}
+					    {% endif %}
+						<div class="billing-details">
+							<div class="section-title">
+								<h3 class="title">Créer mon compte</h3>
+                            </div>
+                            <form id="checkout-form" class="clearfix" method="post" action="  ">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input class="input" type="text" name="username" placeholder="Username" required>
+                                </div>
+                                <div class="form-group">
+                                    <input class="input" type="password" name="password" placeholder="Your password" required>
+                                </div>
+                                
+                                    <input  type="submit"  value="Envoyer">
+                               
+                            </form>
+						</div>
+					</div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+{% endblock  %}

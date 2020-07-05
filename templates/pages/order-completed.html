@@ -1,0 +1,53 @@
+{% extends 'bases/base.html' %}
+
+{% block title %}  Finalisation d'achat {% endblock %}
+{% block description %} {{setting.description}} {% endblock %}
+{% block keywords %} {{setting.keywords}} {% endblock %}
+
+{% block sidebar %} {% include 'pages/sidebar.html' %} {% endblock  %}
+
+{% block body %} 
+
+     <!-- BREADCRUMB -->
+     <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li class="active">Valider mon achat</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="order-summary-clearfix">
+                        <div class="section-title">
+                            <h3>Validation de  Commande</h3>
+                        </div>
+                        <hr>
+                         <p>Monsieur/Madame:</p><h3> {{user.first_name}} {{user.last_name}} </h3>
+                        <hr>
+                        <h4>Votre  Commande est Validé </h4>
+                       <h3>Référence du produit: <span style="color: darkorange;"> {{ ordercode }} </span> </h3>
+                        <h3>Merci!! </h3> 
+                        <h6>Dans 24h on vous livrera votre commande!!</h6>
+                        <hr>
+                    
+                    </div>
+                </div>
+
+                
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+{% endblock  %}

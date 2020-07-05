@@ -1,0 +1,84 @@
+{% extends 'bases/base.html' %}
+
+{% block title %} Mes commentaires {% endblock %}
+{% block description %} {{setting.description}} {% endblock %}
+{% block keywords %} {{setting.keywords}} {% endblock %}
+
+{% block sidebar %} {% include 'pages/sidebar.html' %} {% endblock  %}
+
+{% block body %} 
+
+     <!-- BREADCRUMB -->
+     <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li class="active">Mes commentaires</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-3">
+                    {% include 'user/user-panel.html' %}
+                </div>
+
+                <div class="col-md-9">
+                    <div class="order-summary-clearfix">
+                        <div class="section-title">
+                            <h3>Listes de mes  commentaires</h3>
+                        </div>
+                        
+                        <table class="shopping-cart-table table">
+                            
+                                <tr>
+                                    <th class="text-left">ID</th>
+                                    <th class="text-left">Produit</th>
+                                    <th></th>
+                                    <th class="text-left">Etoile</th>
+                                    <th class="text-left">subjet</th>
+                                    <th class="text-left">Commentaire</th>
+                                    <th class="text-left">Status</th>
+                                    <th class="text-left">Date</th>
+                                    <th class="text-right">Details</th>
+                                </tr>
+                        
+                                {% for rs in comments %}
+                                <tr>
+                                    <!-- <td> {{rs.id}} </td> -->
+                                    <td></td>
+                                    <td class="text-left"> 
+                                        <a href="/Articles/{{rs.produit_id}}/{{rs.produit.slug}}">
+                                            <img src=" {{rs.produit.photo.url}} " alt="" style="height: 50px;">
+                                        </a>
+                                    </td>
+                                    <td class="text-left"> {{rs.produit.title}} </td>
+                                    <td class="text-left">  {{rs.rate}} </td>
+                                    <td class="text-left">{{rs.subject}} </td>
+                                    <td class="text-left"> {{rs.comment}}</td>
+                                    <td class="text-left">{{rs.status}} </td>
+                                    <td class="text-left">{{rs.date_add}} </td>
+                                    <td class="text-right"> 
+                                        <a href="/user/delete-comment/{{rs.id}}" onclick="return confirm('Etre vous sure de vouloir supprimer ?')" class="primary-btn">Delete
+                                        </a>
+                                    </td>
+
+                                </tr>
+                                {% endfor %}
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+{% endblock  %}
