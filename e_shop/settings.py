@@ -25,7 +25,7 @@ SECRET_KEY = 't4lvfj#il3v1gucqt)wn+!oe6j7dcst1tj)5#ckhwzu+e&h^9p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['e-trashop.herokuapp.com']
 
 
 # Application definition
@@ -85,9 +85,18 @@ WSGI_APPLICATION = 'e_shop.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd8ecr6av4ovha9',
+        'USER': 'gwtkvftmetugqk',
+        'PASSWORD': '257aa3ed3c311f35edfbb90549bc44a1adf3de83936818de71d69f870a8ccf00',
+        'HOST': 'ec2-54-247-78-30.eu-west-1.compute.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
