@@ -14,7 +14,7 @@ def index(request):
 	categorie = Category.objects.all()
 	product_slider = Produit.objects.all().order_by('-id')[:6] #Les 5 novo articles ajouté
 	product_latest = Produit.objects.all().order_by('id')[:8] #Les 5 novo articles ajouté
-	product_picker = Produit.objects.all().order_by('-id')[:8] #Les 5 novo articles ajouté
+	product_picker = Produit.objects.all().order_by('?')[:12] #Les 5 novo articles ajouté
 
 	context = {
 		'setting':setting,
