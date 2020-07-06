@@ -12,9 +12,9 @@ def index(request):
 	page = 'home'
 	setting = Setting.objects.get(pk=1)
 	categorie = Category.objects.all()
-	product_slider = Produit.objects.all().order_by('-id')[:5] #Les 5 novo articles ajouté
+	product_slider = Produit.objects.all().order_by('-id')[:6] #Les 5 novo articles ajouté
 	product_latest = Produit.objects.all().order_by('id')[:8] #Les 5 novo articles ajouté
-	product_picker = Produit.objects.all().order_by('-id')[:12] #Les 5 novo articles ajouté
+	product_picker = Produit.objects.all().order_by('-id')[:8] #Les 5 novo articles ajouté
 
 	context = {
 		'setting':setting,
