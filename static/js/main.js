@@ -35,11 +35,6 @@
     }
   });
 
-  //Accordions
-  $(function() {
-  $( "#accordion" ).accordion();
-  });
-
   // HOME SLICK
   $('#home-slick').slick({
     autoplay: true,
