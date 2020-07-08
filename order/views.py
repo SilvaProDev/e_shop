@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib import messages
-from  django.utils.crypto import 
+from  django.utils.crypto import get_random_string
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import ShopCart, Order, OrderProduit
