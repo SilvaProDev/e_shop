@@ -1,6 +1,6 @@
 {% extends 'bases/base.html' %}
 
-{% block title %}{{setting.titre}}|Inscription {% endblock %}
+{% block title %} connection {% endblock %}
 {% block description %} {{setting.description}} {% endblock %}
 {% block keywords %} {{setting.keywords}} {% endblock %}
 
@@ -13,7 +13,7 @@
         <div class="container">
             <ul class="breadcrumb">
                 <li><a href="{% url 'home' %}">Home</a></li>
-                <li class="active">Inscription </li>
+                <li class="active">connection </li>
             </ul>
         </div>
     </div>
@@ -35,7 +35,7 @@
 					    {% endif %}
 						<div class="billing-details">
 							<div class="section-title">
-								<h3 class="title">Créer mon compte</h3>
+								<h3 class="title">Se connecter </h3>
                             </div>
                             <form id="checkout-form" class="clearfix" method="post" action="  ">
                                 {% csrf_token %}
@@ -50,7 +50,40 @@
                                
                             </form>
 						</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="section-title">
+                            <h3 class="title">Inscription</h3>
+                        </div>
+                        {% if messages %}
+                            {% for messag in messages %}
+                                <div class="alert-alert-{{messag.tags}}" role="alert" style="color: green; font-style: italic;">
+                                    {{messag}}
+                                </div>
+                            {% endfor %}
+					    {% endif %}
+						<form action="" method="post">
+                            {% csrf_token %}
+
+                            <!-- {{ form.as_p}} -->
+                            {% for field in form %}
+                            <p>
+                                {{ field.label_tag }} <br>
+                                {{ field }}
+                                {% if field.help_text %}
+                                <small style="...">{{ field.help_text}}</small>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                    <p style="...">{{error}}</p>
+                                {% endfor %}
+                            </p>
+                            {% endfor %} 
+                            
+                            <button type="submit">Singn Up</button>
+                        </form>
 					</div>
+                    
             </div>
             <!-- /row -->
         </div>
