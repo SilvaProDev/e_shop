@@ -25,8 +25,8 @@ SECRET_KEY = 't4lvfj#il3v1gucqt)wn+!oe6j7dcst1tj)5#ckhwzu+e&h^9p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['e-trashop.herokuapp.com']
-#ALLOWED_HOSTS = ['localhost']
+#ALLOWED_HOSTS = ['e-trashop.herokuapp.com']
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'product.apps.ProductConfig',
     'order.apps.OrderConfig',
     'user.apps.UserConfig',
+    'newsletter.apps.NewsletterConfig',
 
     'ckeditor',
     'mptt',

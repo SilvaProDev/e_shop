@@ -7,8 +7,26 @@ from .forms import ContactForm, SearchForm
 from product.models import Category, Produit, Image, Comment
 from order.models import ShopCart
 
+from django.conf import settings
+from django.core.mail import send_mail
+
+from newsletter.models import NewsletterUser,Newsletter
+from newsletter.forms import NewsletterSignUpForm
+
 # Create your views here.
 def index(request):
+	if request.method =='POST':
+		form = NewsletterSignUpForm(request.POST)
+		if form.is_valid():
+			instance = form.save()
+			newsletter = Newsletter.objects.get(id=instance.id)
+			if newsletter.status==True:
+				subject = newsletter.subject
+				body = newsletter.body
+				from_email = settings.EMAIL_HOST_USER
+				for email in newsletter.email.all():
+					send_mail(subject=subject, from_email=from_email, recipient_list=[email], message=body, fail_silently=True)
+
 	page = 'home'
 	setting = Setting.objects.get(pk=1)
 	categorie = Category.objects.all()
@@ -17,6 +35,7 @@ def index(request):
 	product_picker = Produit.objects.all().order_by('?')[:12] #Les 5 novo articles ajouté
 
 	context = {
+		"form":form,
 		'setting':setting,
 		'page':page,
 		'categorie':categorie,
