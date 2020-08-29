@@ -138,7 +138,7 @@ USE_TZ = True
 
 EMAIL_HOST ="smtp.gmail.com"
 EMAIL_HOST_USER = "trashoptfashion@gmail.com"
-EMAIL_HOST_PASSWORD = "45981434"
+EMAIL_HOST_PASSWORD = "Tshop4598"
 EMAIL_PORT = 587 or 465
 EMAIL_USE_TLS = True
 
