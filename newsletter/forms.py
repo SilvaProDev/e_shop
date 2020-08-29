@@ -5,7 +5,9 @@ from .models import NewsletterUser
 class NewsletterSignUpForm(forms.ModelForm):
     class Meta:
         model= NewsletterUser
-        fields = ["email",]
+        fields = (
+            'email',
+        )
 
     def clean_email(self):
         email = self.cleaned_data['email']
