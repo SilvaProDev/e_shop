@@ -17,7 +17,7 @@ class NewsletterUser(models.Model):
 class Newsletter(models.Model):
     subject = models.CharField(max_length=255)
     body = models.TextField()
-    email = models.ForeignKey(NewsletterUser, on_delete=models.CASCADE, related_name='newsletter')
+    email = models.ManyToManyField(NewsletterUser)
     status = models.BooleanField(default=True)
     date_add = models.DateTimeField(auto_now_add=True)
 
