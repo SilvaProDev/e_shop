@@ -28,6 +28,7 @@ def index(request):
 					send_mail(subject=subject, from_email=from_email, recipient_list=[email], message=body, fail_silently=True)
 
 	page = 'home'
+	form = NewsletterSignUpForm
 	setting = Setting.objects.get(pk=1)
 	categorie = Category.objects.all()
 	product_slider = Produit.objects.all().order_by('-id')[:6] #Les 5 novo articles ajouté
