@@ -18,6 +18,7 @@ def index(request):
 	if request.method =='POST':
 		form = NewsletterSignUpForm(request.POST)
 		if form.is_valid():
+			email = form.cleaned_data['email']
 			instance = form.save()
 			newsletter = Newsletter.objects.get(id=instance.id)
 			if newsletter.status==True:
