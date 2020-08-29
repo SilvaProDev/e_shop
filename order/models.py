@@ -34,6 +34,7 @@ class Order(models.Model):
     code = models.CharField(max_length=5, editable=False)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
+    #email = models.EmailField()
     phone = models.CharField(blank=True, max_length=50)
     address = models.CharField(blank=True, max_length=150)
     city = models.CharField(blank=True, max_length=150)

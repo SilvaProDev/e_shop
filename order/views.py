@@ -8,6 +8,9 @@ from .forms import ShopCartForm, OrderForm
 from product.models import Category, Produit
 from user.models import UserProfile
 
+from django.core.mail import send_mail
+from django.conf import settings
+
 # Create your views here.
 
 def index(request):
@@ -90,6 +93,13 @@ def orderproduit(request):
             ordercode = get_random_string(5).upper()
             data.code = ordercode
             data.save() 
+
+            subject = "Validation de votre Achat sur Tshop"
+            from_email = settings.EMAIL_HOST_USER
+            to_email = [current_user.email]
+            body = """Félicitation vous venez de valider votre achat sur https://e-trashop.herokuapp.com et voici votre code reference """,ordercode,""" Nous vous enverons un email"""
+            send_mail(subject=subject, from_email=from_email, recipient_list=to_email, message=body, fail_silently=False)
+
 
             #Move the ShopCart items to Orders Product items
             schopcart = ShopCart.objects.filter(user_id=current_user.id)
