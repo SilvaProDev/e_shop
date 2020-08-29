@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import NewsletterUser, Newsletter
+from newsletter.models import NewsletterUser, Newsletter
 
 class NewsletterUserAdmin(admin.ModelAdmin):
     list_display = (
