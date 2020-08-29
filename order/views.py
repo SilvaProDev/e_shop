@@ -97,7 +97,7 @@ def orderproduit(request):
             subject = "Validation de votre Achat sur Tshop"
             from_email = settings.EMAIL_HOST_USER
             to_email = [current_user.email]
-            body = """Félicitation vous venez de valider votre achat sur https://e-trashop.herokuapp.com ; Nous vous enverons un email"""
+            body = "Félicitation vous venez de valider votre achat sur https://e-trashop.herokuapp.com ; Nous vous enverons un email"
             send_mail(subject=subject, from_email=from_email, recipient_list=to_email, message=body, fail_silently=False)
 
 
