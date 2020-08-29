@@ -68,7 +68,7 @@
 					<div class="footer">
 						<h3 class="footer-header">Stay Connected</h3>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.</p>
-						<form action=" {% url : 'home' %} " method="POST" >
+						<form action=" {% url 'home' %} " method="POST" >
 							{% csrf_token %}
 							<div class="form-group">
 								<input class="input" placeholder="Enter Email Address" name="email" id="email">
