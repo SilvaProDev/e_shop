@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class NewsletterUser(models.Model):
-    email = models.EmailField()
+    email = models.EmailField(max_length=255)
     date_add = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -15,6 +15,11 @@ class NewsletterUser(models.Model):
 
 
 class Newsletter(models.Model):
+    # STATUS = (
+    #     ('True', 'True'),
+    #     ('False', 'False'),
+    #     ('Publie', 'Publie')
+    # )
     subject = models.CharField(max_length=255)
     body = models.TextField()
     email = models.ManyToManyField(NewsletterUser)

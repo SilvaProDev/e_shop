@@ -8,31 +8,40 @@ from product.models import Category, Produit, Image, Comment
 from order.models import ShopCart
 
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import send_mass_mail
 
-from newsletter.models import NewsletterUser,Newsletter
-from newsletter.forms import NewsletterSignUpForm
+from newsletters.models import NewsletterUser,Newsletters
+from newsletters.forms import NewsletterUserSignUp
 
 # Create your views here.
 def index(request):
 	if request.method =='POST':
-		form = NewsletterSignUpForm(request.POST)
+		form = NewsletterUserSignUp(request.POST)
 		if form.is_valid():
 			instance = NewsletterUser()
-			instance.email = form.cleaned_data["email"]
+			instance.email = form.cleaned_data['email']
 			instance.save()
-			newsletter = Newsletter.objects.get(id=instance.id)
-			if newsletter.status==True:
-				subject = newsletter.subject
-				body = newsletter.body
-				from_email = settings.EMAIL_HOST_USER
-				for email in newsletter.email.all():
-					send_mail(subject=subject, from_email=from_email, recipient_list=[email], message=body, fail_silently=True)
+			# for newsletter in  Newsletter.objects.all():
+			# 	if newsletter.status == 'Publie':
+			# 		subject = newsletter.subject
+			# 		body = newsletter.body
+			# 		from_email = settings.EMAIL_HOST_USER
+			# 		#to_email = [newsletter.email.all()]
+			# 		for to_email in newsletter.email.all():
+			# 			send_mass_mail(from_email = from_email, recipient_list=to_email, message=body, fail_silently=False )
+			# if newsletter.status=='True':
+			# 	subject = newsletter.subject
+			# 	body = newsletter.body
+			# 	from_email = settings.EMAIL_HOST_USER
+			# 	for email in newsletter.email.all():
+			# 		send_mail(subject=subject, from_email=from_email, recipient_list=[email], message=body, fail_silently=True)
+			#return HttpResponseRedirect('/home')
 
-	form = NewsletterSignUpForm()
+	form = NewsletterUserSignUp
 	page = 'home'
 	setting = Setting.objects.get(pk=1)
 	categorie = Category.objects.all()
+	# newsletter = Newsletter.objects.all()
 	product_slider = Produit.objects.all().order_by('-id')[:6] #Les 5 novo articles ajouté
 	product_latest = Produit.objects.all().order_by('id')[:8] #Les 5 novo articles ajouté
 	product_picker = Produit.objects.all().order_by('?')[:12] #Les 5 novo articles ajouté
