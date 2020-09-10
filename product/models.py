@@ -50,6 +50,12 @@ class Produit(models.Model):
 		('True','True'),
 		('False', 'False'),
 	)
+	VARIANTS = (
+		('None', 'None'),
+		('Size', 'Size'),
+		('Color', 'Color'),
+		('Size-Color', 'Size-Color'),
+	)
 	categorie = models.ForeignKey(Category, on_delete=models.CASCADE)
 	titre = models.CharField(max_length=150)
 	keywords = models.CharField(max_length=100)
@@ -60,6 +66,7 @@ class Produit(models.Model):
 	reduction = models.FloatField()
 	pourcentage = models.IntegerField()
 	details = RichTextUploadingField()
+	variant = models.CharField(max_length=10, choices=VARIANTS, default='None' )
 	status = models.CharField(max_length=10, choices=STATUS)
 	slug = models.SlugField()
 
@@ -122,6 +129,63 @@ class Comment(models.Model):
 
 	def __str__(self):
 		return self.subject
+
+
+class Color(models.Model):
+	name = models.CharField(max_length=30)
+	code = models.CharField(max_length=10, blank=True, null=True)
+
+	def __str__(self):
+		return self.name
+
+	def color_tag(self):
+		if self.code is not None:
+			return mark_safe('<p style="background-color:{}"> Color </p>'.format(self.code))
+		else:
+			return ""
+
+
+class Size(models.Model):
+	name = models.CharField(max_length=20)
+	code = models.CharField(max_length=10, blank=True, null=True)
+
+	def __str__(self):
+		return self.name
+
+
+class Variant(models.Model):
+	titre = models.CharField(max_length=100, blank=True, null=True)
+	produit = models.ForeignKey(Produit, on_delete=models.CASCADE, related_name="produit")
+	color = models.ForeignKey(Color, on_delete=models.CASCADE, blank=True, null=True)
+	size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null=True)
+	image_id = models.IntegerField(blank=True, null=True, default=0)
+	quantity = models.IntegerField(default=1)
+	price = models.FloatField(default=0)
+
+	def __str__(self):
+		return self.titre
+
+	def image(self):
+		img = Image.objects.get(id=self.image_id)
+		if img.id is not None:
+			varimage = img.photo.url
+		else:
+			varimage =""
+		return varimage
+
+
+	def image_tag(self):
+		img = Image.objects.get(id=self.image_id)
+		if img.id is not None:
+			return mark_safe('<img src="{}" height="50"/>'.format(img.photo.url))
+		else:
+			return ""
+
+
+
+
+
+
 
 
 

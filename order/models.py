@@ -1,24 +1,30 @@
 from django.db import models
 from django.contrib.auth.models import User
-from product.models import Produit
+from product.models import Produit, Variant
+
 
 # Create your models here.
 
 class ShopCart(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     produit = models.ForeignKey(Produit, on_delete=models.SET_NULL, null=True)
+    variant = models.ForeignKey(Variant, on_delete=models.SET_NULL, blank=True ,null=True)
     quantity = models.IntegerField()
 
     def __str__(self):
-        return self.produit.titre
+        return (self.produit.titre)
 
     @property
     def price(self):
-        return self.produit.price
+        return (self.produit.price)
 
     @property
     def amount(self):
         return (self.produit.price * self.quantity)
+
+    @property
+    def varamount(self):
+        return (self.quantity * self.produit.price)
 
 
 class Order(models.Model):

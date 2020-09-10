@@ -61,10 +61,10 @@
                                             <img src=" {{rs.produit.photo.url}} " alt="" style="height: 50px;">
                                         </a>
                                     </td>
-                                    <td class="text-left"> {{rs.produit.title}} </td>
-                                    <td class="text-left"> $ {{rs.price}} </td>
+                                    <td class="text-left"> {{rs.produit.title}} {{rs.variant.size}} {{rs.variant.color}} </td>
+                                    <td class="text-left"> {{rs.price}}€ </td>
                                     <td class="text-left">{{rs.quantity}} </td>
-                                    <td class="text-left"> $ {{rs.amount}}</td>
+                                    <td class="text-left"> {{rs.amount}}€</td>
                                     <td class="text-left">{{rs.status}} </td>
                                     <td class="text-left">{{rs.date_add}} </td>
                                     <th class="text-right"> <a class="primary-btn" href="order-product-details/{{rs.id}}/{{rs.order.id}}">Details</a></th>

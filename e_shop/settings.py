@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
+from django.utils.translation import gettext_lazy as _
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -26,7 +26,7 @@ SECRET_KEY = 't4lvfj#il3v1gucqt)wn+!oe6j7dcst1tj)5#ckhwzu+e&h^9p'
 DEBUG = True
 
 ALLOWED_HOSTS = ['e-trashop.herokuapp.com']
-#ALLOWED_HOSTS = ['localhost']
+# ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -49,12 +49,14 @@ INSTALLED_APPS = [
 
     'ckeditor',
     'mptt',
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -125,6 +127,16 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
+
+LANGUAGES = [
+    ('en', _('English')),
+    ('tr', _('Turkish')),
+    ('fr', _('French')),
+]
+
+LOCALE_PATH =(
+    os.path.join(BASE_DIR, '/locale/'),
+)
 
 LANGUAGE_CODE = 'en-us'
 

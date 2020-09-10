@@ -3,6 +3,28 @@ from ckeditor_uploader.fields import  RichTextUploadingField
 
 # Create your models here.
 
+
+class Language(models.Model):
+    name= models.CharField(max_length=20)
+    code = models.CharField(max_length=50)
+    status = models.BooleanField()
+    date_add = models.DateTimeField(auto_now_add=True)
+    date_mod = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Language"
+        verbose_name_plural = "Languages"
+
+llist = Language.objects.filter(status=True)
+list1 = []
+
+for rs in llist:
+    list1.append(rs.code, rs.name)
+langlist = (list1)
+
 class Setting(models.Model):
     STATUS = (
         ('True', 'True'),
@@ -40,6 +62,18 @@ class Setting(models.Model):
     def __str__(self):
         return self.titre
 
+class SettingLang(models.Model):
+    setting = models.ForeignKey(Setting, on_delete=models.CASCADE)
+    lang = models.CharField(max_length=50, choices=langlist)
+    titre = models.CharField(max_length=150)
+    keyword = models.CharField(max_length=150)
+    description = models.CharField(max_length=255)
+    aboutus = RichTextUploadingField(blank=True)
+    contact = RichTextUploadingField(blank=True)
+    references = RichTextUploadingField(blank=True)
+
+    def __str__(self):
+        return self.titre
 
 class ContactMessage(models.Model):
     STATUS = (
@@ -51,7 +85,7 @@ class ContactMessage(models.Model):
     email = models.EmailField(blank=True,max_length=155)
     subject = models.CharField(blank=True,max_length=50)
     message = models.TextField(blank=True)
-    status = models.CharField(max_length=10, choices=STATUS, default='True')
+    status = models.CharField(max_length=50, choices=STATUS, default='True')
     ip = models.CharField(blank=True,max_length=20)
     note = models.CharField(blank=True, max_length=100)
 
@@ -71,10 +105,11 @@ class Faq(models.Model): #Frequently Ask Question (Question Frequemment Posées)
         ('True', 'True'),
         ('False', 'False'),
     )
+    lang = models.CharField(max_length=50, choices=langlist, blank=True, null=True)
     ordernumber = models.IntegerField()
     question = models.CharField(max_length=200)
     answer = RichTextUploadingField()
-    status = models.CharField(max_length=10, choices=STATUS)
+    status = models.CharField(max_length=50, choices=STATUS)
 
     date_add = models.DateTimeField(auto_now_add=True)
     date_upd = models.DateTimeField(auto_now=True)

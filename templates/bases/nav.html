@@ -1,12 +1,14 @@
 
 {% load static %}
 
+{% load i18n %}
+
 <header>
 		<!-- top Header -->
 		<div id="top-header">
 			<div class="container">
 				<div class="pull-left">
-					<span>Welcome to E-shop!</span>
+					<span>{% trans "Welcome to E-shop!" %}</span>
 					{% if messages %}
 						{% for message in messages %}
 							<div class="alert-alert-{{message.tags}}" role="alert" style="color: green; font-style: italic;">
@@ -17,17 +19,33 @@
 				</div>
 				<div class="pull-right">
 					<ul class="header-top-links">
-						<li><a href="#">Store</a></li>
-						<li><a href="#">Newsletter</a></li>
-						<li><a href=" {% url 'faq' %} ">FAQ</a></li>
+						<!-- <li><a href="#">Store</a></li>
+						<li><a href="#">Newsletter</a></li> -->
+						<li><a href=" {% url 'faq' %} ">{% trans "Faq" %}</a></li>
 						<li class="dropdown default-dropdown">
-							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">ENG <i class="fa fa-caret-down"></i></a>
+							<form action=" {% url 'selectlanguage' %} " method="post">
+								{% csrf_token %}
+								<input type="hidden" name="text"  value="{{redirect_to}}">
+								<select name="language" >
+									{% get_current_language as LANGUAGE_CODE %}
+									{% get_available_languages as LANGUAGES %}
+									{% get_language_info_list for LANGUAGES as languages %}
+
+									{% for language in languages %}
+									<option value="{{language.code}}" {% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+										{{language.name_local}} ({{language.code}})
+									</option>
+									{% endfor %}
+									<input type="submit" value="OK">
+								</select>
+							</form>
+							<!-- <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">ENG <i class="fa fa-caret-down"></i></a>
 							<ul class="custom-menu">
 								<li><a href="#">English (ENG)</a></li>
 								<li><a href="#">Russian (Ru)</a></li>
 								<li><a href="#">French (FR)</a></li>
 								<li><a href="#">Spanish (Es)</a></li>
-							</ul>
+							</ul> -->
 						</li>
 						<li class="dropdown default-dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">USD <i class="fa fa-caret-down"></i></a>
@@ -53,7 +71,7 @@
 						</a>
 					</div>
 					<!-- /Logo -->
-					<script>
+					<!-- <script>
 
 						$(function() {
 						  $("#query").autocomplete({
@@ -70,7 +88,7 @@
 						  var selectedObj = ui.item;
 						}
 					  
-					</script>
+					</script> -->
 
 					<!-- Search -->
 					<div class="header-search">
@@ -78,7 +96,10 @@
 							{% csrf_token %}
 							<input id="query" name="query" class="input search-input" type="text" placeholder="Enter your keyword">
 							<select name="catid" class="input search-categories">
-								<option value="0">All Categories</option>
+								<option value="0">{% trans "All Categories" %}</option>
+								{% load myapptags %}
+
+								{% categorylist as categorie %}
 								{% load mptt_tags %}
 
 								{% recursetree categorie %}
@@ -111,14 +132,14 @@
 								<strong class="text-uppercase">{{user.first_name}} <i class="fa fa-caret-down"></i></strong>
 							</div>
 							{% else %}
-							<a href="{% url 'user:login' %}" class="text-uppercase">Login</a> / <a href="{% url 'user:signup' %}" class="text-uppercase">SingUp</a>
+							<a href="{% url 'user:login' %}" class="text-uppercase">{% trans "Login" %}</a> / <a href="{% url 'user:signup' %}" class="text-uppercase">SingUp</a>
 							{% endif %}
 							<ul class="custom-menu">
-								<li><a href="{% url 'user:moncompte' %}"><i class="fa fa-user-o"></i> My Account</a></li>
-								<li><a href="/user/favorites"><i class="fa fa-heart-o"></i> Mes Favories</a></li>
-								<li><a href="/user/produits"><i class="fa fa-exchange"></i> Mes produits</a></li>
-								<li><a href="/user/comments"><i class="fa fa-check"></i> comment</a></li>
-								<li><a href="/logout"><i class="fa fa-unlock-alt"></i> Logout</a></li>
+								<li><a href="{% url 'user:moncompte' %}"><i class="fa fa-user-o"></i>{% trans "My Account" %}</a></li>
+								<!-- <li><a href="/user/favorites"><i class="fa fa-heart-o"></i> "Mes favorites</a></li> -->
+								<li><a href="{% url 'user:produits' %}"><i class="fa fa-exchange"></i> {% trans "Mes produits" %}</a></li>
+								<li><a href="{% url 'user:comments' %}"><i class="fa fa-check"></i> {% trans "Comments" %}</a></li>
+								<li><a href="{% url 'user:logout' %}"><i class="fa fa-unlock-alt"></i> {% trans "Logout" %}</a></li>
 	
 							</ul>
 							
@@ -135,7 +156,7 @@
 									{% shopcartcount user.id as cnt %}
 									<span class="qty"> {{cnt}} </span>
 								</div>
-								<strong class="text-uppercase"> Panier</strong>
+								<strong class="text-uppercase">{% trans "Mon Panier:" %}</strong>
 								
 								
 							</a>

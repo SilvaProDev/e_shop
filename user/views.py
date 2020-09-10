@@ -16,13 +16,13 @@ from . forms import signUpForm, UserUpdateForm, ProfileUpdateForm
 # Create your views here.
 @login_required(login_url='/login') 
 def index(request):
-    categorie = Category.objects.all()
+    #categorie = Category.objects.all()
     current_user = request.user
     profile = UserProfile.objects.get(user_id= current_user.id)
     
     
     context = {
-        'categorie':categorie,
+        #'categorie':categorie,
         'profile':profile,
         }
     return render(request, 'user/user-profile.html', context)
@@ -48,8 +48,10 @@ def login_in(request):
             messages.success(request, 'Login Error ! Nomutilisateur ou mot de passe incorrect')
             return HttpResponseRedirect('/login') #Renvoie tjrs la page de connexion
             
-    categorie = Category.objects.all()
-    context = {'categorie':categorie,}
+    #categorie = Category.objects.all()
+    context = {
+        #'categorie':categorie,
+        }
     return render(request, 'user/login_form.html', context)
 
 def logout_func(request):
@@ -89,8 +91,10 @@ def signup_form(request):
     
     else:
         form = signUpForm()
-    categorie = Category.objects.all()
-    context = {'categorie':categorie,'form':form,}
+    #categorie = Category.objects.all()
+    context = {
+        #'categorie':categorie,
+        'form':form,}
     return render(request, 'user/signup_form.html', context)
     
 
@@ -106,10 +110,11 @@ def update_profile(request):
             return redirect('/moncompte')
 
     else:
-        categorie = Category.objects.all()
+        #categorie = Category.objects.all()
         user_form = UserUpdateForm( instance=request.user)
         profile_form = ProfileUpdateForm(instance=request.user.userprofile)
-        context = {'categorie':categorie,
+        context = {
+            #'categorie':categorie,
             'user_form':user_form,
             'profile_form':profile_form,
             }
@@ -128,9 +133,10 @@ def user_password(request):
             messages.error(request, 'Vous avez saisi un mot de passe incorrect. <br>'+str(form.errors))
             return HttpResponseRedirect('/user/password')
     else:
-        categorie = Category.objects.all()
+        #categorie = Category.objects.all()
         form = PasswordChangeForm(request.user)
-        context = {'categorie':categorie,
+        context = {
+            #'categorie':categorie,
             'form':form,
             
             }
@@ -142,9 +148,10 @@ def user_orders(request):
     current_user = request.user
     orders = Order.objects.filter(user_id=current_user.id)
 
-    categorie = Category.objects.all()
+    #categorie = Category.objects.all()
     
-    context = {'categorie':categorie,
+    context = {
+        #'categorie':categorie,
         'orders':orders,
         
         }
@@ -158,9 +165,10 @@ def user_orderdetail(request, id):
     orders = Order.objects.get(user_id=current_user.id, id=id)
     orderitems = OrderProduit.objects.filter(order_id=id)
 
-    categorie = Category.objects.all()
+    #categorie = Category.objects.all()
     
-    context = {'categorie':categorie,
+    context = {
+        #'categorie':categorie,
         'orders':orders,
         'orderitems':orderitems,
         
@@ -174,9 +182,10 @@ def user_orderproduct(request):
     current_user = request.user
     order_product = OrderProduit.objects.filter(user_id=current_user.id)
 
-    categorie = Category.objects.all()
+    #categorie = Category.objects.all()
     
-    context = {'categorie':categorie,
+    context = {
+        #'categorie':categorie,
         
         'order_product':order_product,
         
@@ -190,9 +199,10 @@ def user_order_product_detail(request, id, oid):
     orders = Order.objects.get(user_id=current_user.id, id=oid)
     orderitems = OrderProduit.objects.filter(id=id, user_id=current_user.id)
 
-    categorie = Category.objects.all()
+    #categorie = Category.objects.all()
     
-    context = {'categorie':categorie,
+    context = {
+        #'categorie':categorie,
         'orders':orders,
         'orderitems':orderitems,
         
@@ -204,9 +214,10 @@ def user_comments(request):
 
     current_user = request.user
     comments = Comment.objects.filter(user_id=current_user.id)
-    categorie = Category.objects.all()
+    #categorie = Category.objects.all()
     
-    context = {'categorie':categorie,
+    context = {
+        #'categorie':categorie,
         'comments':comments,
         
         }

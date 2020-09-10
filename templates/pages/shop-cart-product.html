@@ -44,14 +44,37 @@
                         <tr>
                             <!-- <td>{{forloop.counter}}</td> -->
                             {% if sp.produit.photo %}
-                            <td class="thumb"><img src="{{sp.produit.photo.url}}" alt=""></td>
+                                {% if sp.variant.image_id > 0 %}
+                                <td class="thumb"><img src="{{sp.variant.image}}" alt=""></td>
+                                {% else %}
+                                <td class="thumb"><img src="{{sp.produit.photo.url}}" alt=""></td>
+                                {% endif %}
                             {% endif %}
                             <td class="details">
-                                <a href="/Articles/{{sp.produit.id}}/{{sp.produit.slug}}">{{sp.produit}}</a>
+                                <a href="/Articles/{{sp.produit.id}}/{{sp.produit.slug}}">{{sp.produit}} {{sp.variant.size}} </a>
                             </td>
-                            <td class="price text-center"><strong>{{sp.produit.price}}</strong><br><del class="font-weak"><small>{{sp.produit.reduction}}</small></del></td>
+                            <td class="price text-center">
+                                <strong>
+                                    {% if sp.produit.variant == 'None' %}
+                                        {{sp.produit.price}}
+                                    {% else %}
+                                        {{sp.produit.price}}
+                                    {% endif %}
+                                    
+                                €</strong><br>
+                                <del class="font-weak"><small>{{sp.produit.reduction}}</small>
+                                </del>
+                            </td>
                             <td class="total text-center"><strong class="primary-color">{{sp.quantity}}</strong></td>
-                            <td class="total text-center"><strong class="primary-color">{{sp.amount}}€</strong></td>
+                            <td class="total text-center">
+                                <strong class="primary-color">
+                                    {% if sp.produit.variant == 'None' %}
+                                        {{sp.amount}}
+                                    {% else %}
+                                        {{sp.varamount}}
+                                    {% endif %}
+                                </strong>
+                            </td>
                             <td class="text-right"><button class="main-btn icon-btn"> <a href="/order/delete-from-shop-cart/{{sp.id}}" onclick="return confirm('Etre vous sure de vouloir supprimer ?')" class="main-btn icon-btn"> <i class="fa fa-close"></i></a></button></td>
                   
                     {% empty %}
@@ -72,7 +95,7 @@
                         <tr>
                             <th class="empty" colspan="3"></th>
                             <th>SUBTOTAL</th>
-                            <th colspan="2" class="sub-total">${{total}}</th>
+                            <th colspan="2" class="sub-total">{{total}}€</th>
                         </tr>
                         <tr>
                             <th class="empty" colspan="3"></th>
@@ -82,7 +105,7 @@
                         <tr>
                             <th class="empty" colspan="3"></th>
                             <th>TOTAL</th>
-                            <th colspan="2" class="total">${{total}}</th>
+                            <th colspan="2" class="total">{{total}}€</th>
                         </tr>
 
                         <!-- <tr>

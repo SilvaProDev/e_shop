@@ -12,6 +12,11 @@ from e_shop import settings
 register = template.Library()
 
 @register.simple_tag
+def categorylist():
+   return Category.objects.all()
+
+
+@register.simple_tag
 def shopcartcount(userid):
     cnt = ShopCart.objects.filter(user_id=userid).count()
     return cnt

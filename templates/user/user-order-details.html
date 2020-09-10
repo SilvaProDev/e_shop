@@ -91,13 +91,17 @@
                                     <td></td>
                                     <td class="text-left"> 
                                         <a href="/Articles/{{rs.produit_id}}/{{rs.produit.slug}}">
-                                            <img src=" {{rs.produit.photo.url}} " alt="" style="height: 50px;">
+                                            {% if rs.variant.image_id> 0%}
+                                                <img src=" {{rs.variant.photo}} " alt="" style="height: 50px;">
+                                            {% else %}
+                                                <img src=" {{rs.produit.photo.url}} " alt="" style="height: 50px;">
+                                            {% endif %}
                                         </a>
                                     </td>
-                                    <td class="text-left"> {{rs.produit.title}} </td>
-                                    <td class="text-left"> $ {{rs.price}} </td>
+                                    <td class="text-left"> {{rs.produit.title}} {{rs.variant.size}} {{rs.variant.color}} </td>
+                                    <td class="text-left"> {{rs.price}}€ </td>
                                     <td class="text-left">{{rs.quantity}} </td>
-                                    <td class="text-left"> $ {{rs.amount}}</td>
+                                    <td class="text-left"> {{rs.amount}}€</td>
                                     <td class="text-left">{{rs.status}} </td>
                                     <td class="text-left">{{rs.date_add}} </td>
                                 </tr>

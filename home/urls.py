@@ -12,4 +12,6 @@ urlpatterns = [
 	path('search_auto/', views.search_auto, name = 'search_auto'),
 	path('Articles/<int:id>/<slug:slug>', views.product_details, name = 'product_details'),
 	path('faq', views.faq, name = 'faq'),
+
+	path('ajaxcolor', views.ajaxcolors, name='ajaxcolor'),
 ]

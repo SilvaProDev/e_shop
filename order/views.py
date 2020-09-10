@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import ShopCart, Order, OrderProduit
 from .forms import ShopCartForm, OrderForm
-from product.models import Category, Produit
+from product.models import Category, Produit, Variant
 from user.models import UserProfile
 
 from django.core.mail import send_mail
@@ -75,7 +75,10 @@ def orderproduit(request):
 
     total = 0
     for sp in schopcart:
-        total += sp.produit.price * sp.quantity
+        if sp.produit.variant == 'None':
+            total += sp.produit.price * sp.quantity
+        else:
+            total += sp.variant.price * sp.quantity
 
     if request.method=='POST':
         form = OrderForm(request.POST)
@@ -109,14 +112,24 @@ def orderproduit(request):
                 details.produit_id = sp.produit_id
                 details.user_id = current_user.id
                 details.quantity = sp.quantity
-                details.price = sp.produit.price
+                if sp.produit.variant == 'None':
+                    details.price = sp.produit.price
+                else:
+                    details.price = sp.variant.price
+
+                details.variant_id = sp.variant_id
                 details.amount = sp.amount
                 details.save()
 
                 #Reduce quantity of sold produit  from amount of produit
-                produit = Produit.objects.get(id=sp.produit_id)
-                produit.amount -= sp.quantity
-                produit.save()
+                if sp.produit.variant == 'None':
+                    produit = Produit.objects.get(id=sp.produit_id)
+                    produit.amount -= sp.quantity
+                    produit.save()
+                else:
+                    variant = Variant.objects.get(id=sp.produit_id)
+                    variant.amount -= sp.quantity
+                    variant.save()
             
             ShopCart.objects.filter(user_id = current_user.id).delete() #Supprime les produit dans shopcart
             request.session['cart_items']=0

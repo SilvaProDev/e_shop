@@ -134,9 +134,32 @@
                                         <td class="details">
                                             <a href="/Articles/{{sp.produit.id}}/{{sp.produit.slug}}">{{sp.produit}}</a>
                                         </td>
-                                        <td class="price text-center"><strong>{{sp.produit.price}}</strong><br><del class="font-weak"><small>{{sp.produit.reduction}}</small></del></td>
+                                        <td class="price text-center">
+                                            <strong>
+                                                {% if rs.produit.variant == 'None' %}
+                                                    {{sp.produit.price}}
+                                                {% else %}
+                                                    {{rs.variant.price}}
+                                                {% endif %}
+                                                
+                                            €</strong><br>
+                                            <del class="font-weak"><small>{{sp.produit.reduction}}</small>
+                                            </del>
+                                        </td>
                                         <td class="total text-center"><strong class="primary-color">{{sp.quantity}}</strong></td>
-                                        <td class="total text-center"><strong class="primary-color">{{sp.amount}}€</strong></td>
+                                        <td class="total text-center">
+                                            <strong class="primary-color">
+                                                {% if rs.produit.variant == 'None' %}
+                                                    {{sp.amount}}
+                                                {% else %}
+                                                    {{rs.varamount}}
+                                                {% endif %}
+                                            </strong>
+                                        </td>
+
+                                        <!-- <td class="price text-center"><strong>{{sp.produit.price}}</strong><br><del class="font-weak"><small>{{sp.produit.reduction}}</small></del></td>
+                                        <td class="total text-center"><strong class="primary-color">{{sp.quantity}}</strong></td>
+                                        <td class="total text-center"><strong class="primary-color">{{sp.amount}}€</strong></td> -->
                                     </tr>
                                     {% endfor %}
                                     

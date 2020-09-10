@@ -18,7 +18,17 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.urls import path, include
 
+from django.conf.urls.i18n import i18n_patterns
+from product.views import selectlanguage
+from django.utils.translation import gettext_lazy as _
+
 urlpatterns = [
+    path('selectlanguage', selectlanguage, name="selectlanguage"),
+    path('i18n/', include("django.conf.urls.i18n")),
+]
+
+urlpatterns += i18n_patterns(
+    path(_('admin/'), admin.site.urls),
 	path('', include('home.urls')),
     path('', include('product.urls')),
     path('', include('user.urls')),
@@ -26,8 +36,9 @@ urlpatterns = [
     #path('', include('newsletter.urls')),
     path('order/', include('order.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('admin/', admin.site.urls),
-]
+
+    prefix_default_language=False,
+)
 
 
 if settings.DEBUG:

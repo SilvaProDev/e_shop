@@ -1,8 +1,9 @@
 from django.contrib import admin
 from mptt.admin import DraggableMPTTAdmin
+import admin_thumbnails
 
 # Register your models here.
-from product.models import Category, Produit, Image, Comment
+from product.models import Category, Produit, Image, Comment, Color, Size, Variant
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -43,11 +44,30 @@ class CategoryAdmin2(DraggableMPTTAdmin):
         return instance.products_cumulative_count
     related_products_cumulative_count.short_description = 'Related products (in tree)'
 
-
+@admin_thumbnails.thumbnail('photo')
 class ProduitImageInline(admin.TabularInline):
     model = Image
-    extra = 5
+    extra = 1
+    readonly_fields = (
+        'id',
+    )
 
+
+class ProduitVariantInline(admin.TabularInline):
+    model = Variant
+    extra = 1
+    readonly_fields = (
+        'image_tag',
+    )
+    show_change_link=True
+
+@admin_thumbnails.thumbnail('photo')
+class ImageAdmin(admin.ModelAdmin):
+    list_display =(
+        'titre',
+        'photo',
+        'image_thumbnail',
+    )
 class ProduitAdmin(admin.ModelAdmin):
     list_display = ['titre', 'categorie', 'status']
     list_filter = ['status']
@@ -55,7 +75,7 @@ class ProduitAdmin(admin.ModelAdmin):
     # readonly_fields = (
     #     'image_tag',
     # )
-    inlines = [ProduitImageInline]
+    inlines = [ProduitImageInline, ProduitVariantInline]
 
 
 class Commentdmin(admin.ModelAdmin):
@@ -69,6 +89,31 @@ class Commentdmin(admin.ModelAdmin):
         'produit',
         'rate',
     )
+
+class ColorAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'code',
+        'color_tag',
+    )
+
+class SizeAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'code',
+        
+    )
+
+class VariantAdmin(admin.ModelAdmin):
+    list_display = (
+        'titre',
+        'produit',
+        'color',
+        'size',
+        'price',
+        'quantity',
+        'image_tag',
+    )
     
     
 
@@ -76,3 +121,6 @@ admin.site.register(Category, CategoryAdmin2)
 admin.site.register(Produit, ProduitAdmin)
 admin.site.register(Image)
 admin.site.register(Comment, Commentdmin)
+admin.site.register(Color, ColorAdmin)
+admin.site.register(Size, SizeAdmin)
+admin.site.register(Variant, VariantAdmin)

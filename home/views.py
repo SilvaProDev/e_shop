@@ -1,10 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Setting, ContactMessage, Faq
 from .forms import ContactForm, SearchForm
-from product.models import Category, Produit, Image, Comment
+from product.models import Category, Produit, Image, Comment, Variant, Color, Size
 from order.models import ShopCart
 
 from django.conf import settings
@@ -16,44 +18,30 @@ from newsletters.forms import NewsletterUserSignUp
 # Create your views here.
 def index(request):
 	if request.method =='POST':
-		form = NewsletterUserSignUp(request.POST)
-		if form.is_valid():
+		form1 = NewsletterUserSignUp(request.POST)
+		if form1.is_valid():
 			instance = NewsletterUser()
-			instance.email = form.cleaned_data['email']
+			instance.email = form1.cleaned_data['email']
 			instance.save()
-			# for newsletter in  Newsletter.objects.all():
-			# 	if newsletter.status == 'Publie':
-			# 		subject = newsletter.subject
-			# 		body = newsletter.body
-			# 		from_email = settings.EMAIL_HOST_USER
-			# 		#to_email = [newsletter.email.all()]
-			# 		for to_email in newsletter.email.all():
-			# 			send_mass_mail(from_email = from_email, recipient_list=to_email, message=body, fail_silently=False )
-			# if newsletter.status=='True':
-			# 	subject = newsletter.subject
-			# 	body = newsletter.body
-			# 	from_email = settings.EMAIL_HOST_USER
-			# 	for email in newsletter.email.all():
-			# 		send_mail(subject=subject, from_email=from_email, recipient_list=[email], message=body, fail_silently=True)
-			#return HttpResponseRedirect('/home')
-
-	form = NewsletterUserSignUp
+			
+	form1 = NewsletterUserSignUp
 	page = 'home'
 	setting = Setting.objects.get(pk=1)
-	categorie = Category.objects.all()
-	# newsletter = Newsletter.objects.all()
+	#categorie = Category.objects.all()
 	product_slider = Produit.objects.all().order_by('-id')[:6] #Les 5 novo articles ajouté
 	product_latest = Produit.objects.all().order_by('id')[:8] #Les 5 novo articles ajouté
-	product_picker = Produit.objects.all().order_by('?')[:12] #Les 5 novo articles ajouté
+	product_picker = Produit.objects.all().order_by('?')[:8] #Les 5 novo articles ajouté
+	product = Produit.objects.all().order_by('-date_add')[:8] #Les 5 novo articles ajouté
 
 	context = {
-		"form":form,
+		"form1":form1,
 		'setting':setting,
 		'page':page,
-		'categorie':categorie,
+		#'categorie':categorie,
 		'product_slider':product_slider,
 		'product_latest':product_latest,
 		'product_picker':product_picker,
+		'product':product,
 	}
 	return render(request, 'pages/index.html', context)
 
@@ -136,6 +124,7 @@ def search_auto(request):
 
 
 def product_details(request, id, slug):
+	query = request.GET.get('q')
 	categorie = Category.objects.all()
 	produit = Produit.objects.get(pk=id)
 	img = Image.objects.filter(product_id=id)
@@ -147,11 +136,54 @@ def product_details(request, id, slug):
 	#Retrieve_values: review.rate__avg, review.id__count
 	#review = Comment.objects.row("SELECT,id, count(id) as countrew, avg(rate) as avgrew for product_comment WHERE produit_id=%s and status = 'Red'", [id])[0]
 	#Retrieve_values: review.avgrew, review.countrew
-
-	context = {'produit':produit,'categorie':categorie, 'img':img,'comment':comment,}
+	context = {'produit':produit, 'categorie':categorie, 
+			   'img':img, 'comment':comment,
+		}
+	if produit.variant != "None":
+		if request.method == "POST":
+			variant_id= request.POST.get('variantid')
+			variant = Variant.objects.get(id=variant_id)
+			colors = Variant.objects.filter(produit_id=id, size_id=variant.size_id)
+			sizes = Variant.objects.raw('SELECT * FROM  product_variant WHERE produit_id=%s GROUP BY size_id,product_variant.id', [id])
+			query += variant.titre+'Size:'+str(variant.size)+'Color:'+str(variant.color)
+		else:
+			variants = Variant.objects.filter(produit_id=id)
+			colors = Variant.objects.filter(produit_id=id, size_id=variants[0].size_id)
+			sizes = Variant.objects.raw('SELECT * FROM product_variant WHERE produit_id =%s GROUP BY size_id, product_variant.id', [id])
+			variant = Variant.objects.get(id=variants[0].id)
+		context.update({'sizes':sizes,'color':colors,'variant':variant,'query':query,})
 
 	return render(request, 'pages/product_details.html', context)
 
+# def ajaxcolor(request):
+# 	data = {}
+# 	if request.POST.get('action') == 'post':
+# 		size_id= request.POST.get('size')
+# 		produitid = request.POST.get('produitid')
+# 		colors = Variant.objects.filter(produit_id=produitid, size_id=size_id)
+# 		context = {
+# 			'size_id':size_id,
+# 			'produitid':produitid,
+# 			'colors':colors,
+# 		}
+# 		data = {'rendered_table':render_to_string('pages/color_list.html', context=context)}
+# 		return JsonResponse(data)
+# 	return JsonResponse(data)
+@csrf_exempt
+def ajaxcolors(request):
+	data = {}
+	if request.POST.get('action') == "post":
+		size_id = request.POST.get('size')
+		produitid = request.POST.get('produitid')
+		colors = Variant.objects.filter(produit_id=produitid, size_id=size_id)
+		context = {
+			'size_id':size_id,
+			'produitid':produitid,
+			'colors':colors,
+		}
+		data = {'rendered_table': render_to_string('pages/color_list.html',context)}
+		return JsonResponse(data)
+	return JsonResponse(data)
 
 @login_required(login_url='/login')
 def shop_cart(request):

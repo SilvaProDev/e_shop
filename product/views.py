@@ -3,6 +3,8 @@ from .forms import CommentForm
 from django.contrib import messages
 from product.models import Comment
 from django.http import HttpResponse, HttpResponseRedirect
+from django.utils import translation
+from django.utils.translation import activate
 
 # Create your views here.
 
@@ -27,6 +29,15 @@ def comment(request, id):
             return HttpResponseRedirect(url)
 
     return HttpResponseRedirect(url)
+
+def selectlanguage(request):
+    if request.method == "POST":
+        cur_language = translation.get_language()
+        lasturl = request.META.get("HTTP_REFERER")
+        lang = request.POST['language']
+        translation.activate(lang)
+        request.session[translation.LANGUAGE_SESSION_KEY]=lang
+        return HttpResponseRedirect("/"+lang)
 
        
 		
